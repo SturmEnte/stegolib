@@ -1,3 +1,5 @@
+use image::{self, DynamicImage};
+use image::GenericImageView;
 
 // [Cmd name] [en- or decode] [input-image] [input-file] [output-image]
 pub fn least_significant_bit(args: Vec<String>) {
@@ -9,17 +11,14 @@ pub fn least_significant_bit(args: Vec<String>) {
     }
 
     let mode: &String = &args[2];
-    let input_img: &String = &args[3];
-    let input_file: &String = &args[4];
-    let output_img: &String = &args[5];
 
     println!("Mode: {mode}");
-    println!("Input image: {input_img}");
-    println!("Input file: {input_file}");
-    println!("Output image: {output_img}");
+    println!("Input image: {}", &args[3]);
+    println!("Input file: {}", &args[4]);
+    println!("Output image: {}", &args[5]);
 
     if mode == "encode" {
-        encode();
+        encode(&args[3], &args[4], &args[5]);
         return;
     } else if mode == "decode" {
         println!("Not implemented yet");
@@ -31,6 +30,9 @@ pub fn least_significant_bit(args: Vec<String>) {
     
 }
 
-fn encode() {
+fn encode(input_img: &String, input_file: &String, output_img: &String) {
+    let img: DynamicImage = image::open(input_img).unwrap();
+    for pixel in img.pixels() {
+        println!("{:?}", pixel.2.0[0]);
     }
 }
