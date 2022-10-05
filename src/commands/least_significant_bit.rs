@@ -59,14 +59,23 @@ fn encode(input_img_path: &Path, input_file_path: &Path, output_img_path: &Path)
     println!("{:?}", hidden_binary);
 
     let img: DynamicImage = image::open(input_img_path).unwrap();
-    for pixel in img.pixels() {
+    for mut pixel in img.pixels() {
         let r: String = utility::decimal_to_binary(pixel.2.0[0]);
         let g: String = utility::decimal_to_binary(pixel.2.0[1]);
         let b: String = utility::decimal_to_binary(pixel.2.0[2]);
         let a: String = utility::decimal_to_binary(pixel.2.0[3]);
 
         println!("{r}|{g}|{b}|{a}");
+
+        pixel.2.0[0] = utility::binary_to_decimal(r);
+        pixel.2.0[1] = utility::binary_to_decimal(g);
+        pixel.2.0[2] = utility::binary_to_decimal(b);
+        pixel.2.0[3] = utility::binary_to_decimal(a);
+
+        println!("{}|{}|{}|{}", pixel.2.0[0], pixel.2.0[1], pixel.2.0[2], pixel.2.0[3]);
     }
+
+    img.save(output_img_path).unwrap();
 }
 
 fn decode(input_img_path: &Path) {
