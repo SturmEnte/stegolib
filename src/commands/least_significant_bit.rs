@@ -27,7 +27,8 @@ pub fn least_significant_bit(args: Vec<String>) {
         encode(Path::new(&args[3]), Path::new(&args[4]), Path::new(&args[5]));
         return;
     } else if mode == "decode" {
-        println!("Not implemented yet");
+        decode(Path::new(&args[3]));
+        println!("Not implemented yet!");
         return;
     }
 
@@ -59,7 +60,24 @@ fn encode(input_img_path: &Path, input_file_path: &Path, output_img_path: &Path)
 
     let img: DynamicImage = image::open(input_img_path).unwrap();
     for pixel in img.pixels() {
-        println!("{}", utility::decimal_to_binary(pixel.2.0[0]));
+        let r = utility::decimal_to_binary(pixel.2.0[0]);
+        let g = utility::decimal_to_binary(pixel.2.0[1]);
+        let b = utility::decimal_to_binary(pixel.2.0[2]);
+        let a = utility::decimal_to_binary(pixel.2.0[3]);
+
+        println!("{r}|{g}|{b}|{a}");
+    }
+}
+
+fn decode(input_img_path: &Path) {
+    let img: DynamicImage = image::open(input_img_path).unwrap();
+    for pixel in img.pixels() {
+        let r = utility::decimal_to_binary(pixel.2.0[0]);
+        let g = utility::decimal_to_binary(pixel.2.0[1]);
+        let b = utility::decimal_to_binary(pixel.2.0[2]);
+        let a = utility::decimal_to_binary(pixel.2.0[3]);
+
+        println!("{r}|{g}|{b}|{a}");
     }
 }
 
