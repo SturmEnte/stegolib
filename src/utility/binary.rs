@@ -18,7 +18,7 @@ pub fn decimal_to_binary(decimal: u8) -> String {
     result
 }
 
-pub fn binary_to_decimal(binary: String) -> u8 {
+pub fn binary_to_decimal(binary: &String) -> u8 {
     let mut result: u8 = 0;
 
     let binary_vec: Vec<char> = binary.chars().collect();

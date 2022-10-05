@@ -58,24 +58,38 @@ fn encode(input_img_path: &Path, input_file_path: &Path, output_img_path: &Path)
     
     println!("{:?}", hidden_binary);
 
+    let mut i: usize = 0;
+
     let img: DynamicImage = image::open(input_img_path).unwrap();
     for mut pixel in img.pixels() {
-        let r: String = utility::decimal_to_binary(pixel.2.0[0]);
-        let g: String = utility::decimal_to_binary(pixel.2.0[1]);
-        let b: String = utility::decimal_to_binary(pixel.2.0[2]);
-        let a: String = utility::decimal_to_binary(pixel.2.0[3]);
+        let mut colors: [String; 4] = [
+            utility::decimal_to_binary(pixel.2.0[0]), // r
+            utility::decimal_to_binary(pixel.2.0[1]), // g
+            utility::decimal_to_binary(pixel.2.0[2]), // b
+            utility::decimal_to_binary(pixel.2.0[3])  // a
+        ];
 
-        println!("{r}|{g}|{b}|{a}");
+        println!("{}|{}|{}|{}", colors[0], colors[1], colors[2], colors[3]);
 
-        pixel.2.0[0] = utility::binary_to_decimal(r);
-        pixel.2.0[1] = utility::binary_to_decimal(g);
-        pixel.2.0[2] = utility::binary_to_decimal(b);
-        pixel.2.0[3] = utility::binary_to_decimal(a);
+        let mut j: usize = 0;
+
+        while i < hidden_binary.len() && j < 4 {
+            colors[j] = String::from(utility::remove_last_char(colors[j].as_str()));
+            colors[j].push_str(hidden_binary[i].to_string().as_str());
+
+            j += 1;
+            i += 1;
+        }
+
+        pixel.2.0[0] = utility::binary_to_decimal(&colors[0]);
+        pixel.2.0[1] = utility::binary_to_decimal(&colors[1]);
+        pixel.2.0[2] = utility::binary_to_decimal(&colors[2]);
+        pixel.2.0[3] = utility::binary_to_decimal(&colors[3]);
 
         println!("{}|{}|{}|{}", pixel.2.0[0], pixel.2.0[1], pixel.2.0[2], pixel.2.0[3]);
     }
 
-    img.save(output_img_path).unwrap();
+    // img.save(output_img_path).unwrap();
 }
 
 fn decode(input_img_path: &Path) {
