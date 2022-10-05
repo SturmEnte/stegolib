@@ -10,24 +10,29 @@ use crate::utility;
 // [Cmd name] [en- or decode] [input-image] [input-file] [output-image]
 pub fn least_significant_bit(args: Vec<String>) {
 
-    if args.len() < 6 {
-        println!("Wrong command usage!");
-        println!("Please use this command like this: {} [mode] [input-image] [input-file] [output-image]", args[1]);
-        return;
-    }
-
     let mode: &String = &args[2];
 
-    println!("Mode: {mode}");
-    println!("Input image: {}", &args[3]);
-
     if mode == "encode" {
+        println!("Mode: {mode}");
+        println!("Input image: {}", &args[3]);
         println!("Input file: {}", &args[4]);
         println!("Output image: {}", &args[5]);
+        
+        if args.len() < 6 {
+            wrong_command_usage(&args[1]);
+            return;
+        }
 
         encode(Path::new(&args[3]), Path::new(&args[4]), Path::new(&args[5]));
         return;
     } else if mode == "decode" {
+        if args.len() < 5 {
+            wrong_command_usage(&args[1]);
+            return;
+        }
+
+        println!("Mode: {mode}");
+        println!("Input image: {}", &args[3]);
         println!("Output file: {}", &args[4]);
 
         decode(Path::new(&args[3]), Path::new(&args[4]));
@@ -120,4 +125,10 @@ fn int_vec_to_string(vec: Vec<u32>) -> String {
     });
 
     res
+}
+
+fn wrong_command_usage(command_name: &String) {
+    println!("Wrong command usage!");
+    println!("Please use this command like this: {} encode [input-image] [input-file] [output-image]", command_name);
+    println!("Or like this: {} decode [input-image] [input-file] [output-image]", command_name);
 }
