@@ -89,7 +89,7 @@ fn encode(input_img_path: &Path, input_file_path: &Path, output_img_path: &Path)
         println!("{}|{}|{}|{}", pixel.2.0[0], pixel.2.0[1], pixel.2.0[2], pixel.2.0[3]);
     }
 
-    // img.save(output_img_path).unwrap();
+    img.save(output_img_path).unwrap();
 }
 
 fn decode(input_img_path: &Path) {
