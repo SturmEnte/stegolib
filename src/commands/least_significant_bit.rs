@@ -60,10 +60,10 @@ fn encode(input_img_path: &Path, input_file_path: &Path, output_img_path: &Path)
 
     let img: DynamicImage = image::open(input_img_path).unwrap();
     for pixel in img.pixels() {
-        let r = utility::decimal_to_binary(pixel.2.0[0]);
-        let g = utility::decimal_to_binary(pixel.2.0[1]);
-        let b = utility::decimal_to_binary(pixel.2.0[2]);
-        let a = utility::decimal_to_binary(pixel.2.0[3]);
+        let r: String = utility::decimal_to_binary(pixel.2.0[0]);
+        let g: String = utility::decimal_to_binary(pixel.2.0[1]);
+        let b: String = utility::decimal_to_binary(pixel.2.0[2]);
+        let a: String = utility::decimal_to_binary(pixel.2.0[3]);
 
         println!("{r}|{g}|{b}|{a}");
     }
@@ -72,10 +72,10 @@ fn encode(input_img_path: &Path, input_file_path: &Path, output_img_path: &Path)
 fn decode(input_img_path: &Path) {
     let img: DynamicImage = image::open(input_img_path).unwrap();
     for pixel in img.pixels() {
-        let r = utility::decimal_to_binary(pixel.2.0[0]);
-        let g = utility::decimal_to_binary(pixel.2.0[1]);
-        let b = utility::decimal_to_binary(pixel.2.0[2]);
-        let a = utility::decimal_to_binary(pixel.2.0[3]);
+        let r: String = utility::decimal_to_binary(pixel.2.0[0]);
+        let g: String = utility::decimal_to_binary(pixel.2.0[1]);
+        let b: String = utility::decimal_to_binary(pixel.2.0[2]);
+        let a: String = utility::decimal_to_binary(pixel.2.0[3]);
 
         println!("{r}|{g}|{b}|{a}");
     }
