@@ -55,12 +55,10 @@ fn encode(input_img_path: &Path, input_file_path: &Path, output_img_path: &Path)
 
     let input_file: String =  fs::read_to_string(input_file_path).unwrap();
     let hidden_binary: Vec<char> = int_vec_to_string(ascii_converter::string_to_binary(input_file.as_str()).unwrap()).chars().collect();
-    
-    println!("{:?}", hidden_binary);
-
-    let mut i: usize = 0;
 
     let img: DynamicImage = image::open(input_img_path).unwrap();
+
+    let mut i: usize = 0;
     for mut pixel in img.pixels() {
         let mut colors: [String; 4] = [
             utility::decimal_to_binary(pixel.2.0[0]), // r
@@ -68,8 +66,6 @@ fn encode(input_img_path: &Path, input_file_path: &Path, output_img_path: &Path)
             utility::decimal_to_binary(pixel.2.0[2]), // b
             utility::decimal_to_binary(pixel.2.0[3])  // a
         ];
-
-        println!("{}|{}|{}|{}", colors[0], colors[1], colors[2], colors[3]);
 
         let mut j: usize = 0;
 
@@ -85,8 +81,6 @@ fn encode(input_img_path: &Path, input_file_path: &Path, output_img_path: &Path)
         pixel.2.0[1] = utility::binary_to_decimal(&colors[1]);
         pixel.2.0[2] = utility::binary_to_decimal(&colors[2]);
         pixel.2.0[3] = utility::binary_to_decimal(&colors[3]);
-
-        println!("{}|{}|{}|{}", pixel.2.0[0], pixel.2.0[1], pixel.2.0[2], pixel.2.0[3]);
     }
 
     img.save(output_img_path).unwrap();
