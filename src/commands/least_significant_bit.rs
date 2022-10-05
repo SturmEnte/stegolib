@@ -20,15 +20,17 @@ pub fn least_significant_bit(args: Vec<String>) {
 
     println!("Mode: {mode}");
     println!("Input image: {}", &args[3]);
-    println!("Input file: {}", &args[4]);
-    println!("Output image: {}", &args[5]);
 
     if mode == "encode" {
+        println!("Input file: {}", &args[4]);
+        println!("Output image: {}", &args[5]);
+
         encode(Path::new(&args[3]), Path::new(&args[4]), Path::new(&args[5]));
         return;
     } else if mode == "decode" {
-        decode(Path::new(&args[3]));
-        println!("Not implemented yet!");
+        println!("Output file: {}", &args[4]);
+
+        decode(Path::new(&args[3]), Path::new(&args[4]));
         return;
     }
 
