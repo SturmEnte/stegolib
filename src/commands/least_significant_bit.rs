@@ -19,7 +19,7 @@ pub fn least_significant_bit(args: Vec<String>) {
         println!("Output image: {}", &args[5]);
         
         if args.len() < 6 {
-            wrong_command_usage(&args[1]);
+            utility::error_messages::wrong_command_usage(&args[1]);
             return;
         }
 
@@ -27,7 +27,7 @@ pub fn least_significant_bit(args: Vec<String>) {
         return;
     } else if mode == "decode" {
         if args.len() < 5 {
-            wrong_command_usage(&args[1]);
+            utility::error_messages::wrong_command_usage(&args[1]);
             return;
         }
 
@@ -93,7 +93,21 @@ fn encode(input_img_path: &Path, input_file_path: &Path, output_img_path: &Path)
     img.save(output_img_path).unwrap();
 }
 
-fn decode(input_img_path: &Path) {
+fn decode(input_img_path: &Path, output_file_path: &Path) {
+    if !input_img_path.exists() {
+        println!("The input image does not exist!");
+        return;
+    }
+
+    if output_file_path.exists() {
+        println!("The output file does already exist!");
+        return;
+    }
+
+    let mut result: String = String::new();
+    let mut buffer: String = String::new();
+    let mut i = 0;
+
     let img: DynamicImage = image::open(input_img_path).unwrap();
     for pixel in img.pixels() {
         let r: String = utility::decimal_to_binary(pixel.2.0[0]);
@@ -101,7 +115,28 @@ fn decode(input_img_path: &Path) {
         let b: String = utility::decimal_to_binary(pixel.2.0[2]);
         let a: String = utility::decimal_to_binary(pixel.2.0[3]);
 
-        println!("{r}|{g}|{b}|{a}");
+
+        // let number = "01101".parse::<u128>().unwrap();
+        // println!("{}", number);
+
+        let mut j = 0;
+
+        while j < 4 {
+            // println!("{}", r.chars().last().unwrap().to_string().parse::<u128>().unwrap());
+            buffer.push_str(r.chars().last().unwrap().to_string().as_str());
+            j += 1;
+            i += 1;
+        }
+
+        if i == 8 {
+            // Buffer
+            println!("{}", buffer.parse::<u128>().unwrap());
+            println!("{}", buffer);
+            buffer = String::new();
+            i = 0;
+        }
+
+        // println!("{r}|{g}|{b}|{a}");
     }
 }
 
@@ -125,10 +160,4 @@ fn int_vec_to_string(vec: Vec<u32>) -> String {
     });
 
     res
-}
-
-fn wrong_command_usage(command_name: &String) {
-    println!("Wrong command usage!");
-    println!("Please use this command like this: {} encode [input-image] [input-file] [output-image]", command_name);
-    println!("Or like this: {} decode [input-image] [input-file] [output-image]", command_name);
 }
