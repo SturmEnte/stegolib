@@ -94,6 +94,10 @@ fn encode(input_img_path: &Path, input_file_path: &Path, output_img_path: &Path)
         pixel.2.0[1] = utility::binary_to_decimal(&colors[1]);
         pixel.2.0[2] = utility::binary_to_decimal(&colors[2]);
         pixel.2.0[3] = utility::binary_to_decimal(&colors[3]);
+
+        if i >= hidden_binary.len() {
+            break;
+        }
     }
 
     img.save(output_img_path).unwrap();
