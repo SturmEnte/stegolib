@@ -11,18 +11,23 @@ use crate::error_messages;
 // [Cmd name] [en- or decode] [input-image] [input-file] [output-image]
 pub fn least_significant_bit(args: Vec<String>) {
 
+    if args.len() < 3 {
+        error_messages::wrong_command_usage(&args[1]);
+        return;
+    }
+
     let mode: &String = &args[2];
 
     if mode == "encode" {
+        if args.len() < 6 {
+            error_messages::wrong_command_usage(&args[1]);
+            return;
+        }
+
         println!("Mode: {mode}");
         println!("Input image: {}", &args[3]);
         println!("Input file: {}", &args[4]);
         println!("Output image: {}", &args[5]);
-        
-        if args.len() < 6 {
-            utility::error_messages::wrong_command_usage(&args[1]);
-            return;
-        }
 
         encode(Path::new(&args[3]), Path::new(&args[4]), Path::new(&args[5]));
         return;
