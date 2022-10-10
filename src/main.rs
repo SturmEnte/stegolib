@@ -1,5 +1,6 @@
 mod commands;
 mod utility;
+mod error_messages;
 
 use std::env;
 
