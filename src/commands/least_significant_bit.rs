@@ -67,7 +67,7 @@ fn encode(input_img_path: &Path, input_file_path: &Path, output_img_path: &Path)
     }
 
     let input_file: String =  fs::read_to_string(input_file_path).unwrap();
-    let hidden_binary: Vec<char> = int_vec_to_string(ascii_converter::string_to_binary(input_file.as_str()).unwrap()).chars().collect();
+    let hidden_binary: Vec<char> = utility::int_vec_to_string(&ascii_converter::string_to_binary(input_file.as_str()).unwrap()).chars().collect();
 
     let img: DynamicImage = image::open(input_img_path).unwrap();
 
