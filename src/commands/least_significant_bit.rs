@@ -33,7 +33,7 @@ pub fn least_significant_bit(args: Vec<String>) {
         return;
     } else if mode == "decode" {
         if args.len() < 5 {
-            utility::error_messages::wrong_command_usage(&args[1]);
+            error_messages::wrong_command_usage(&args[1]);
             return;
         }
 
