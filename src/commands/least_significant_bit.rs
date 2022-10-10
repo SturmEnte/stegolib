@@ -6,6 +6,7 @@ use image::GenericImageView;
 use ascii_converter;
 
 use crate::utility;
+use crate::error_messages;
 
 // [Cmd name] [en- or decode] [input-image] [input-file] [output-image]
 pub fn least_significant_bit(args: Vec<String>) {
