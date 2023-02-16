@@ -1,11 +1,12 @@
 package io.github.sturmente.stegolib.utility;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class NumeralSystemConverter {
 		
 		// The first integer in the array is the least significant bit
-		public static ArrayList<Integer> DecToBin(int dec) {
+		public static ArrayList<Integer> decToBin(int dec, Boolean invert, int trailingZeros) {
 			ArrayList<Integer> res = new ArrayList<Integer>();
 			
 			int rest = dec;
@@ -17,7 +18,11 @@ public class NumeralSystemConverter {
 			}
 			
 			// Prevent the array from being empty
-			if(dec == 0) res.add(0);
+			while(res.size() < trailingZeros) res.add(0);
+			
+			if(!invert) {
+				Collections.reverse(res);
+			}
 			
 			return res;
 		}
