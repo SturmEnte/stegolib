@@ -1,5 +1,9 @@
 package io.github.sturmente.stegolib.commands;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.Scanner;
+
 public class LeastSignificantBit {
 	
 	String[] args;
@@ -40,10 +44,29 @@ public class LeastSignificantBit {
 	
 	private void encode() {
 		System.out.println("Mode: Encode");
+		
+		File inputImage = new File(args[2]);
+		File inputData = new File(args[3]);
+		
+		System.out.println("Input image: " + inputImage.getPath());
+		System.out.println("Input data: " + inputData.getPath());
+		
+		// Check if the files exist
+		if(!inputImage.exists()) {
+			System.out.println("The input image does not exist!");
+			return;
+		}
+		
+		if(!inputData.exists()) {
+			System.out.println("The input data does not exist!");
+			return;
+		}
+		
 	}
 	
 	private void decode() {
 		System.out.println("Mode: Decode");
+		System.out.println("Not implemented yet!");
 	}
 	
 	public static void help() {
