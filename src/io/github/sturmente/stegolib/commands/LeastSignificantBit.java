@@ -90,8 +90,7 @@ public class LeastSignificantBit {
 		    }
 		}
 		
-		BufferedImage inputImg = null;
-		inputImg = ImageIO.read(inputImage);
+		BufferedImage inputImg = ImageIO.read(inputImage); 
 		BufferedImage outputImg = new BufferedImage(inputImg.getWidth(), inputImg.getHeight(), inputImg.getType());
 		
 		for (int y = 0; y < inputImg.getHeight(); y++) {
