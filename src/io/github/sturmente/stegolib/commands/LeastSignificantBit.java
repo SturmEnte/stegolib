@@ -7,6 +7,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.nio.file.Files;
+import java.util.Arrays;
 import java.util.Scanner;
 
 import javax.imageio.ImageIO;
@@ -76,18 +78,20 @@ public class LeastSignificantBit {
 		}
 		
 		if(outputImage.exists()) {
-			System.out.println("The output image path already exists. Do you want to overwrite the current file? [y/n]");
+			if(!Arrays.stream(args).anyMatch("-ovwr"::equals)) {
+				System.out.println("The output image path already exists. Do you want to overwrite the current file? [y/n]");
 
-			Scanner in = new Scanner(System.in);
-		    String answer = in.nextLine();
-		    in.close();
-			
-		    if(answer.toLowerCase().equals("y")) {
-		    	System.out.println("Process will be continued");
-		    } else {
-		    	System.out.println("Process will be canceled!");
-		    	return;
-		    }
+				Scanner in = new Scanner(System.in);
+			    String answer = in.nextLine();
+			    in.close();
+				
+			    if(answer.toLowerCase().equals("y")) {
+			    	System.out.println("Process will be continued");
+			    } else {
+			    	System.out.println("Process will be canceled!");
+			    	return;
+			    }
+			}
 		}
 		
 		BufferedImage inputImg = ImageIO.read(inputImage); 
