@@ -6,4 +6,5 @@
  *
  */
 module stegolib {
+	requires java.desktop;
 }
