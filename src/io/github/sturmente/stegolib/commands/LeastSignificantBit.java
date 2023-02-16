@@ -1,4 +1,4 @@
-package io.github.sturmente.stegolib.modes;
+package io.github.sturmente.stegolib.commands;
 
 public class LeastSignificantBit {
 	
@@ -15,7 +15,6 @@ public class LeastSignificantBit {
 			System.out.println("Not enough arguments. Use the help command for further information.");
 			return;
 		}
-			
 			
 	}
 	

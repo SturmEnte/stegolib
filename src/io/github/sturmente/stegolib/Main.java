@@ -1,6 +1,6 @@
 package io.github.sturmente.stegolib;
 
-import io.github.sturmente.stegolib.modes.LeastSignificantBit;
+import io.github.sturmente.stegolib.commands.LeastSignificantBit;
 
 public class Main {
 
