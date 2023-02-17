@@ -101,6 +101,9 @@ public class LeastSignificantBit {
 			NumeralSystemConverter.decToBin(tempData[i], 8).forEach((n) -> data.add(n));
 		}
 		
+		// Add 00000000 to the end of the data, so the decoder knows when to stop
+		for(int i = 0; i < 8; i++) data.add(0);
+		
 		BufferedImage inputImg = ImageIO.read(inputImage); 
 		BufferedImage outputImg = new BufferedImage(inputImg.getWidth(), inputImg.getHeight(), BufferedImage.TYPE_INT_ARGB);
 		
@@ -175,6 +178,7 @@ public class LeastSignificantBit {
 		String data = new String();
 		ArrayList<Integer> buffer = new ArrayList<Integer>();
 		int j = 0;
+		boolean stop = false;
 		
 		for (int y = 0; y < inputImg.getHeight(); y++) {
 			for(int x = 0; x < inputImg.getWidth(); x++) {
@@ -187,13 +191,23 @@ public class LeastSignificantBit {
 					buffer.add(c.get(c.size() - 1));
 					j++;
 					if(j == 8) {
-						char d = (char) NumeralSystemConverter.binToDec(buffer);
-						data += d;
+						int d = NumeralSystemConverter.binToDec(buffer);
+						
+						if(d == 0) {
+							stop = true;
+							break;
+						}
+						
+						data += (char) d;
 						buffer.clear();
 						j = 0;
 					}
 				}
+				
+				if(stop) break;
 			}
+			
+			if(stop) break;
 		}
 		
 		Files.writeString(outputDataFile.toPath(), data);
