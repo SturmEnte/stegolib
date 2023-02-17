@@ -118,17 +118,16 @@ public class LeastSignificantBit {
 				
 				int[] colors = {color.getRed(), color.getGreen(), color.getBlue()};
 				
-				for(int i = 0; (i < colors.length) && (data.size() > 0); i++) {
-					ArrayList<Integer> c = NumeralSystemConverter.decToBin(colors[i], 8);
-					c.set(c.size() - 1, data.remove(0));
-					colors[i] = NumeralSystemConverter.binToDec(c);
+				if(data.size() > 0) {
+					for(int i = 0; (i < colors.length) && (data.size() > 0); i++) {
+						ArrayList<Integer> c = NumeralSystemConverter.decToBin(colors[i], 8);
+						c.set(c.size() - 1, data.remove(0));
+						colors[i] = NumeralSystemConverter.binToDec(c);
+					}
 				}
 				
 				outputImg.setRGB(x, y, new Color(colors[0], colors[1], colors[2], color.getAlpha()).getRGB());
-			
-				if(data.size() == 0) break;
 			}
-			if(data.size() == 0) break;
 		}
 		
 		ImageIO.write(outputImg, "png", outputImageFile);
