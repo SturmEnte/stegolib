@@ -79,7 +79,7 @@ public class LeastSignificantBit {
 		
 		if(outputImageFile.exists()) {
 			if(!Arrays.stream(args).anyMatch("-ovwr"::equals)) {
-				System.out.println("The output image path already exists. Do you want to overwrite the current file? [y/n]");
+				System.out.println("The output image file already exists. Do you want to overwrite the current file? [y/n]");
 
 				Scanner in = new Scanner(System.in);
 			    String answer = in.nextLine();
