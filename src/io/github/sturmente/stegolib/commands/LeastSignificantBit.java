@@ -145,6 +145,8 @@ public class LeastSignificantBit {
 		System.out.println("Least Significant Bit:");
 		System.out.println("lsb encode [input image path] [input data path] [output imgage path]");
 		System.out.println("lsb decode [input image path] [output data path]");
+		System.out.println("You can also add following tags at the end of the command:");
+		System.out.println("-ovwr : This tag will lead to all existing files being just overwritten instead of asking if they shall be overwritten");
 	}
 	
 }
