@@ -3,6 +3,7 @@ package io.github.sturmente.stegolib.commands;
 import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -28,29 +29,29 @@ public class LeastSignificantBit {
 			return;
 		}
 		
-		switch(args[1]) {
-			case "encode":
-				if(args.length < 5) {
-					System.out.println("Not enough arguments. Use the help command for further information.");
-					break;
-				}
-				try {
+		try {
+			switch(args[1]) {
+				case "encode":
+					if(args.length < 5) {
+						System.out.println("Not enough arguments. Use the help command for further information.");
+						break;
+					}
 					encode();
-				} catch(Exception error) {
-					System.out.println("Error while executing command");
-					error.printStackTrace();
-				}
-				break;
-			case "decode":
-				if(args.length < 4) {
-					System.out.println("Not enough arguments. Use the help command for further information.");
 					break;
-				}
-				decode();
-				break;
-			default:
-				System.out.println("Mode \"" + args[1] + "\" not found! Valid modes: encode, decode. Use the help command for further information.");
-				break;
+				case "decode":
+					if(args.length < 4) {
+						System.out.println("Not enough arguments. Use the help command for further information.");
+						break;
+					}
+					decode();
+					break;
+				default:
+					System.out.println("Mode \"" + args[1] + "\" not found! Valid modes: encode, decode. Use the help command for further information.");
+					break;
+			}
+		} catch(Exception error) {
+			System.out.println("Error while executing command");
+			error.printStackTrace();
 		}
 			
 	}
@@ -137,9 +138,67 @@ public class LeastSignificantBit {
 		
 	}
 	
-	private void decode() {
+	private void decode() throws Exception {
 		System.out.println("Mode: Decode");
-		System.out.println("Not implemented yet!");
+		
+		File inputImage = new File(args[2]);
+		File outputDataFile = new File(args[3]);
+		
+		System.out.println("Input image: " + inputImage.getPath());
+		System.out.println("Output data: " + outputDataFile.getPath());
+		
+		// Check if the files exist
+		if(!inputImage.exists()) {
+			System.out.println("The input image does not exist!");
+			return;
+		}
+		
+		if(outputDataFile.exists()) {
+			if(!Arrays.stream(args).anyMatch("-ovwr"::equals)) {
+				System.out.println("The output data file already exists. Do you want to overwrite the current file? [y/n]");
+
+				Scanner in = new Scanner(System.in);
+			    String answer = in.nextLine();
+			    in.close();
+				
+			    if(answer.toLowerCase().equals("y")) {
+			    	System.out.println("Process will be continued");
+			    } else {
+			    	System.out.println("Process will be canceled!");
+			    	return;
+			    }
+			}
+		}
+		
+		BufferedImage inputImg = ImageIO.read(inputImage); 
+		
+		String data = new String();
+		ArrayList<Integer> buffer = new ArrayList<Integer>();
+		int j = 0;
+		
+		for (int y = 0; y < inputImg.getHeight(); y++) {
+			for(int x = 0; x < inputImg.getWidth(); x++) {
+				Color color = new Color(inputImg.getRGB(x, y));
+				
+				int[] colors = {color.getRed(), color.getGreen(), color.getBlue()};
+				
+				for(int i = 0; i < colors.length; i++) {
+					ArrayList<Integer> c = NumeralSystemConverter.decToBin(colors[i], 8);
+					buffer.add(c.get(c.size() - 1));
+					j++;
+					if(j == 8) {
+						char d = (char) NumeralSystemConverter.binToDec(buffer);
+						data += d;
+						buffer.clear();
+						j = 0;
+					}
+				}
+			}
+		}
+		
+		Files.writeString(outputDataFile.toPath(), data);
+		
+		System.out.println("Finished process!");
 	}
 	
 	public static void help() {
