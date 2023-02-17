@@ -2,16 +2,15 @@ package io.github.sturmente.stegolib.commands;
 
 import java.awt.Color;
 import java.awt.image.BufferedImage;
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.nio.file.Files;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Scanner;
 
 import javax.imageio.ImageIO;
+
+import io.github.sturmente.stegolib.utility.NumeralSystemConverter;
 
 public class LeastSignificantBit {
 	
@@ -94,12 +93,31 @@ public class LeastSignificantBit {
 			}
 		}
 		
+		ArrayList<Integer> data = new ArrayList<Integer>();
+		byte[] tempData = Files.readAllBytes(inputData.toPath()); 
+		for(int i = 0; i < tempData.length; i++) {
+			NumeralSystemConverter.decToBin(tempData[i], true, 8).forEach((n) -> data.add(n));
+		}
+		
 		BufferedImage inputImg = ImageIO.read(inputImage); 
 		BufferedImage outputImg = new BufferedImage(inputImg.getWidth(), inputImg.getHeight(), inputImg.getType());
+		
+		int inputImageCapacity = inputImg.getWidth() * inputImg.getHeight() * 3;
+		int inputDataSize = data.size();
+		
+		if(inputImageCapacity < inputDataSize) {
+			System.out.println("The input image is to small for the input data. Your image must be at least " + Math.round(inputDataSize / 3) + " bits in size.");
+		}
+		
+		System.out.println("Input image capacity: " + inputImageCapacity + " bits");
+		System.out.println("Input data size: " + inputDataSize + " bits");
 		
 		for (int y = 0; y < inputImg.getHeight(); y++) {
 			for(int x = 0; x < inputImg.getWidth(); x++) {
 				Color color = new Color(inputImg.getRGB(x, y));
+				
+				
+				
 				outputImg.setRGB(x, y, color.getRGB());
 			}
 		}
