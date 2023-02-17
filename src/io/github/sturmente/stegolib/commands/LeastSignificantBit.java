@@ -64,6 +64,7 @@ public class LeastSignificantBit {
 		
 		System.out.println("Input image: " + inputImage.getPath());
 		System.out.println("Input data: " + inputData.getPath());
+		System.out.println("Output image: " + outputImageFile.getPath());
 		
 		// Check if the files exist
 		if(!inputImage.exists()) {
