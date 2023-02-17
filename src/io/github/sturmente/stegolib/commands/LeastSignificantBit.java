@@ -60,7 +60,7 @@ public class LeastSignificantBit {
 		
 		File inputImage = new File(args[2]);
 		File inputData = new File(args[3]);
-		File outputImage = new File(args[4]);
+		File outputImageFile = new File(args[4]);
 		
 		System.out.println("Input image: " + inputImage.getPath());
 		System.out.println("Input data: " + inputData.getPath());
@@ -76,7 +76,7 @@ public class LeastSignificantBit {
 			return;
 		}
 		
-		if(outputImage.exists()) {
+		if(outputImageFile.exists()) {
 			if(!Arrays.stream(args).anyMatch("-ovwr"::equals)) {
 				System.out.println("The output image path already exists. Do you want to overwrite the current file? [y/n]");
 
@@ -96,11 +96,11 @@ public class LeastSignificantBit {
 		ArrayList<Integer> data = new ArrayList<Integer>();
 		byte[] tempData = Files.readAllBytes(inputData.toPath()); 
 		for(int i = 0; i < tempData.length; i++) {
-			NumeralSystemConverter.decToBin(tempData[i], true, 8).forEach((n) -> data.add(n));
+			NumeralSystemConverter.decToBin(tempData[i], 8).forEach((n) -> data.add(n));
 		}
 		
 		BufferedImage inputImg = ImageIO.read(inputImage); 
-		BufferedImage outputImg = new BufferedImage(inputImg.getWidth(), inputImg.getHeight(), inputImg.getType());
+		BufferedImage outputImg = new BufferedImage(inputImg.getWidth(), inputImg.getHeight(), BufferedImage.TYPE_INT_ARGB);
 		
 		int inputImageCapacity = inputImg.getWidth() * inputImg.getHeight() * 3;
 		int inputDataSize = data.size();
@@ -116,13 +116,22 @@ public class LeastSignificantBit {
 			for(int x = 0; x < inputImg.getWidth(); x++) {
 				Color color = new Color(inputImg.getRGB(x, y));
 				
+				int[] colors = {color.getRed(), color.getGreen(), color.getBlue()};
 				
+				for(int i = 0; (i < colors.length) && (data.size() > 0); i++) {
+					ArrayList<Integer> c = NumeralSystemConverter.decToBin(colors[i], 8);
+					c.set(c.size() - 1, data.remove(0));
+					colors[i] = NumeralSystemConverter.binToDec(c);
+				}
 				
-				outputImg.setRGB(x, y, color.getRGB());
+				outputImg.setRGB(x, y, new Color(colors[0], colors[1], colors[2], color.getAlpha()).getRGB());
+			
+				if(data.size() == 0) break;
 			}
+			if(data.size() == 0) break;
 		}
 		
-		ImageIO.write(outputImg, "png", outputImage);
+		ImageIO.write(outputImg, "png", outputImageFile);
 		
 		System.out.println("Finished process!");
 		
